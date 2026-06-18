@@ -13,6 +13,7 @@
 
 const STORAGE_KEY = "inspection-checklist:v1";
 const DISCLAIMER_KEY = "inspection-checklist:disclaimer-accepted";
+const THEME_KEY = "inspection-checklist:theme";
 const SEVERITIES = ["unchecked", "na", "ok", "minor", "moderate", "concern", "dealbreaker"];
 
 let checklist = null;          // authored content (from Go)
@@ -22,6 +23,7 @@ let activePhase = null;
 // ---- boot ---------------------------------------------------------------
 
 async function boot() {
+  initTheme();
   showDisclaimer();
   const go = new Go(); // from wasm_exec.js
   const resp = await fetch("inspect.wasm");
@@ -36,6 +38,30 @@ async function boot() {
 }
 
 window.addEventListener("DOMContentLoaded", boot);
+
+// ---- theme --------------------------------------------------------------
+// The page follows the OS theme by default. The toggle sets an explicit
+// data-theme override (persisted) that wins over the OS preference.
+
+function currentTheme() {
+  return document.documentElement.dataset.theme ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+}
+function applyThemeButton() {
+  const b = document.getElementById("btn-theme");
+  if (b) b.textContent = currentTheme() === "dark" ? "☀ Light" : "🌙 Dark";
+}
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) document.documentElement.dataset.theme = saved;
+  applyThemeButton();
+}
+function toggleTheme() {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem(THEME_KEY, next);
+  applyThemeButton();
+}
 
 // ---- disclaimer ---------------------------------------------------------
 
@@ -101,6 +127,7 @@ function renderPhase() {
 function renderItem(item) {
   const el = document.createElement("div");
   el.className = "item";
+  el.dataset.sev = (state[item.id] && state[item.id].severity) || "unchecked";
 
   const title = document.createElement("div");
   title.className = "item-title";
@@ -129,6 +156,7 @@ function renderItem(item) {
   sel.dataset.sev = cur;
   sel.addEventListener("change", () => {
     sel.dataset.sev = sel.value;
+    el.dataset.sev = sel.value;
     setItem(item.id, { severity: sel.value });
   });
   meta.appendChild(sel);
@@ -171,6 +199,7 @@ function wireToolbar() {
     document.getElementById("import-file").click());
   document.getElementById("import-file").addEventListener("change", importJSON);
   document.getElementById("btn-reset").addEventListener("click", resetAll);
+  document.getElementById("btn-theme").addEventListener("click", toggleTheme);
 }
 
 function meta() {

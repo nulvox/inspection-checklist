@@ -96,13 +96,13 @@
               "id": "pv-bad-plumbing-types",
               "title": "Problem plumbing/wiring eras",
               "detail": "Know the failure-prone systems so you can spot them: polybutylene supply lines, galvanized steel (rusts shut), knob-and-tube wiring, and aluminum branch wiring. All affect insurability and budget.",
-              "link": { "label": "Polybutylene piping (InspectAPedia)", "url": "https://inspectapedia.com/plumbing/Polybutylene-Piping.php" }
+              "link": { "label": "Polybutylene piping (InspectAPedia)", "url": "https://inspectapedia.com/plumbing/PB_Piping.php" }
             },
             {
               "id": "pv-water-heater-age",
               "title": "Water-heater & system age from serial numbers",
               "detail": "Learn to read manufacture dates off the serial/data plate so on the walk you can tell if the water heater, furnace, or AC is at end of life.",
-              "link": { "label": "How to date a water heater (InspectAPedia)", "url": "https://inspectapedia.com/water/Water_Heater_Age.php" }
+              "link": { "label": "How to date a water heater (InspectAPedia)", "url": "https://inspectapedia.com/plumbing/Water-Heater-Age-Manuals.php" }
             }
           ]
         }
@@ -124,14 +124,14 @@
               "tool": "marble",
               "unorthodox": true,
               "escalatesTo": "ir-structural",
-              "link": { "label": "Reading foundation/settlement cracks (InterNACHI)", "url": "https://www.nachi.org/foundation-walls-piers.htm" }
+              "link": { "label": "Reading foundation/settlement cracks (InterNACHI)", "url": "https://www.nachi.org/foundation-inspection-hhenews.htm" }
             },
             {
               "id": "fw-foundation-cracks",
               "title": "Foundation & brick cracks",
               "detail": "Look for stair-step cracks in brick/block, horizontal cracks (bowing under soil pressure), and gaps where additions meet the original structure.",
               "escalatesTo": "ir-structural",
-              "link": { "label": "Foundation crack types (InterNACHI)", "url": "https://www.nachi.org/foundation-walls-piers.htm" }
+              "link": { "label": "Foundation crack types (InterNACHI)", "url": "https://www.nachi.org/foundation-inspection-hhenews.htm" }
             },
             {
               "id": "fw-doors-square",
@@ -355,7 +355,7 @@
               "id": "ir-structural",
               "title": "Structural engineer evaluation",
               "detail": "Triggered by sloping floors (marble test), foundation cracks, or doors out of square. A licensed structural/PE evaluation tells you whether movement is active and what repair costs — the single biggest deal-breaker on cheap homes.",
-              "link": { "label": "When to call a structural engineer (InterNACHI)", "url": "https://www.nachi.org/foundation-walls-piers.htm" }
+              "link": { "label": "When to call a structural engineer (InterNACHI)", "url": "https://www.nachi.org/foundation-inspection-hhenews.htm" }
             }
           ]
         },
@@ -379,7 +379,7 @@
               "id": "ir-sewer-scope",
               "title": "Sewer scope (camera the lateral)",
               "detail": "A camera run from the house to the city main or septic. Catches collapsed, root-filled, or Orangeburg laterals — a four-to-five-figure repair that no walkthrough can see. The inspection DIYers skip most.",
-              "link": { "label": "Sewer line inspection (InspectAPedia)", "url": "https://inspectapedia.com/septic/Sewer_Line_Inspection.php" }
+              "link": { "label": "Sewer line inspection (InspectAPedia)", "url": "https://inspectapedia.com/plumbing/Sewer-Pipe-Inspection-Cameras.php" }
             }
           ]
         },
@@ -409,7 +409,7 @@
               "id": "ir-oil-tank",
               "title": "Oil-tank sweep (UST)",
               "detail": "For oil-heat history or a buried fill pipe. A geophysical sweep finds abandoned underground tanks; a leaking one is an environmental-cleanup liability that can dwarf the house price.",
-              "link": { "label": "Oil tank abandonment & leaks (InspectAPedia)", "url": "https://inspectapedia.com/heat/Oil_Storage_Tanks.php" }
+              "link": { "label": "Oil tank abandonment & leaks (InspectAPedia)", "url": "https://inspectapedia.com/oiltanks/Oil_Storage_Tanks.php" }
             },
             {
               "id": "ir-asbestos-lead",
