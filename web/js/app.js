@@ -6,8 +6,6 @@
 // lives in Go. This file only renders content and captures user input.
 //
 // TODO(next-agent):
-//   - polish rendering & theme to match fate4.tools / gasslands.tools
-//   - render the computed report into a dedicated view (currently opens raw HTML)
 //   - reserve/implement photoRef capture (v2)
 //   - per-property profiles (currently a single active inspection)
 
@@ -193,6 +191,7 @@ function badge(text, cls) {
 // ---- toolbar actions ----------------------------------------------------
 
 function wireToolbar() {
+  document.getElementById("btn-summary").addEventListener("click", toggleSummary);
   document.getElementById("btn-report").addEventListener("click", openReport);
   document.getElementById("btn-export").addEventListener("click", exportJSON);
   document.getElementById("btn-import").addEventListener("click", () =>
@@ -211,6 +210,142 @@ function openReport() {
   const w = window.open("", "_blank");
   w.document.write(html);
   w.document.close();
+}
+
+// ---- in-app summary -----------------------------------------------------
+// All scoring/escalation/roll-up logic stays in Go: we ask goInspect to
+// compute the report and only render the returned JSON here.
+
+const SEV_LABELS = {
+  dealbreaker: "Deal-breaker", concern: "Concern",
+  moderate: "Moderate", minor: "Minor",
+};
+const TALLY_COLS = ["dealbreaker", "concern", "moderate", "minor"];
+
+function toggleSummary() {
+  const panel = document.getElementById("summary");
+  if (!panel.hidden) { panel.hidden = true; return; }
+  renderSummary(panel);
+  panel.hidden = false;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderSummary(panel) {
+  const report = JSON.parse(goInspect.computeReport(JSON.stringify(state)));
+  panel.innerHTML = "";
+
+  const head = el("div", "summary-head");
+  head.appendChild(el("h2", null, "Summary"));
+  const close = el("button", "summary-close", "✕ Close");
+  close.type = "button";
+  close.setAttribute("aria-label", "Close summary");
+  close.addEventListener("click", () => { panel.hidden = true; });
+  head.appendChild(close);
+  panel.appendChild(head);
+
+  panel.appendChild(countsRow(report));
+
+  // Deal-breakers (or an explicit "none" reassurance).
+  if ((report.dealBreakers || []).length) {
+    panel.appendChild(findingGroup("⛔ Deal-breakers", report.dealBreakers));
+  } else {
+    panel.appendChild(el("p", "summary-none", "✓ No deal-breakers flagged."));
+  }
+
+  // Concern clusters (roll-ups of moderate findings).
+  if ((report.rollUps || []).length) {
+    const sec = el("section", "summary-section");
+    sec.appendChild(el("h3", null, "▲ Concern clusters"));
+    for (const ru of report.rollUps) {
+      const d = el("div", "summary-finding concern");
+      d.appendChild(el("strong", null, ru.categoryName));
+      d.appendChild(el("p", "summary-sub",
+        "Moderate findings: " + (ru.contributing || []).join("; ")));
+      sec.appendChild(d);
+    }
+    panel.appendChild(sec);
+  }
+
+  // Inspections to commission (escalations).
+  if ((report.recommendations || []).length) {
+    const sec = el("section", "summary-section");
+    sec.appendChild(el("h3", null, "🔍 Inspections to commission"));
+    for (const rec of report.recommendations) {
+      const d = el("div", "summary-finding rec");
+      d.appendChild(el("strong", null, rec.item.title));
+      if ((rec.triggeredBy || []).length) {
+        d.appendChild(el("p", "summary-sub",
+          "Triggered by: " + rec.triggeredBy.join("; ")));
+      }
+      sec.appendChild(d);
+    }
+    panel.appendChild(sec);
+  }
+
+  // Remaining findings by severity.
+  for (const sev of ["concern", "moderate", "minor"]) {
+    const list = report[sev === "concern" ? "concerns" : sev] || [];
+    if (list.length) panel.appendChild(findingGroup(SEV_LABELS[sev] + "s", list));
+  }
+
+  panel.appendChild(tallyTable(report.phases || []));
+}
+
+function countsRow(report) {
+  const row = el("div", "summary-counts");
+  const counts = {
+    dealbreaker: (report.dealBreakers || []).length,
+    concern: (report.concerns || []).length,
+    moderate: (report.moderate || []).length,
+    minor: (report.minor || []).length,
+  };
+  for (const sev of TALLY_COLS) {
+    const chip = el("div", "summary-chip " + sev);
+    chip.appendChild(el("span", "summary-chip-n", String(counts[sev])));
+    chip.appendChild(el("span", "summary-chip-l", SEV_LABELS[sev]));
+    row.appendChild(chip);
+  }
+  return row;
+}
+
+function findingGroup(heading, findings) {
+  const sec = el("section", "summary-section");
+  sec.appendChild(el("h3", null, heading));
+  for (const f of findings) {
+    const d = el("div", "summary-finding " + f.severity);
+    d.appendChild(el("strong", null, f.title));
+    if (f.note) d.appendChild(el("p", "summary-note", f.note));
+    sec.appendChild(d);
+  }
+  return sec;
+}
+
+function tallyTable(phases) {
+  const sec = el("section", "summary-section");
+  sec.appendChild(el("h3", null, "By phase"));
+  const table = el("table", "summary-table");
+  const thead = el("tr");
+  thead.appendChild(el("th", null, "Phase"));
+  for (const sev of TALLY_COLS) thead.appendChild(el("th", "num", SEV_LABELS[sev]));
+  table.appendChild(thead);
+  for (const p of phases) {
+    const tr = el("tr");
+    tr.appendChild(el("td", null, p.name));
+    for (const sev of TALLY_COLS) {
+      tr.appendChild(el("td", "num", String((p.counts && p.counts[sev]) || 0)));
+    }
+    table.appendChild(tr);
+  }
+  sec.appendChild(table);
+  return sec;
+}
+
+// el is a tiny DOM helper: tag, optional className, optional text.
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
 }
 
 function exportJSON() {

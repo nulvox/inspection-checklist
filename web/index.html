@@ -35,6 +35,7 @@
     <p class="tagline">Pre-viewing diligence → first-walk DIY → inspections required.</p>
     <div class="toolbar">
       <input id="property-name" type="text" placeholder="Property address / label" aria-label="Property label">
+      <button id="btn-summary">Summary</button>
       <button id="btn-report">Generate report</button>
       <button id="btn-export">Export JSON</button>
       <button id="btn-import">Import JSON</button>
@@ -43,6 +44,9 @@
       <input id="import-file" type="file" accept="application/json" hidden>
     </div>
   </header>
+
+  <!-- In-app summary of the computed report (Go does the scoring). -->
+  <section id="summary" class="summary" aria-label="Inspection summary" hidden></section>
 
   <nav id="phase-tabs" class="tabs" aria-label="Inspection phases"></nav>
   <main id="phases"><p class="loading">Loading checklist…</p></main>

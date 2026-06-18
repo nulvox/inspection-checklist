@@ -38,6 +38,11 @@ type Item struct {
 	Unorthodox bool `json:"unorthodox,omitempty"`
 	// Link is an optional procedure / standard / how-to reference.
 	Link *Link `json:"link,omitempty"`
+	// Weight is the relative significance of this item when it is flagged
+	// Moderate, used by the roll-up rule (several moderate findings in one
+	// category surface a Concern). A heavier item contributes more toward that
+	// threshold. Zero means the default weight of 1; weights are never negative.
+	Weight int `json:"weight,omitempty"`
 	// EscalatesTo is the ID of an item in the inspections-required phase that
 	// should be recommended when this item is flagged Concern or worse.
 	// e.g. the marble/slope item escalates to "ir-structural".

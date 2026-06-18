@@ -156,6 +156,12 @@ var reportTmpl = template.Must(template.New("report").
 <h2 class="none">✓ No deal-breakers flagged</h2>
 {{end}}
 
+{{if .Report.RollUps}}
+<h2 style="color:var(--cn)">▲ Concern clusters ({{len .Report.RollUps}})</h2>
+<p class="sub">No single item below is a deal-breaker, but several moderate findings piled up in one area — worth a closer look.</p>
+{{range .Report.RollUps}}<div class="finding concern"><strong>{{.CategoryName}}</strong><p class="triggers">Moderate findings: {{joinTriggers .Contributing}}</p></div>{{end}}
+{{end}}
+
 {{if .Report.Recommendations}}
 <h2 style="color:var(--rec)">🔍 Inspections to commission ({{len .Report.Recommendations}})</h2>
 {{range .Report.Recommendations}}<div class="rec"><strong>{{.Item.Title}}</strong>{{if .Item.Detail}}<p class="note">{{.Item.Detail}}</p>{{end}}<p class="triggers">Triggered by: {{joinTriggers .TriggeredBy}}</p></div>{{end}}

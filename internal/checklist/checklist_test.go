@@ -88,6 +88,18 @@ func TestContent_LinksWellFormed(t *testing.T) {
 	})
 }
 
+// Per-item weights feed the roll-up rule; they must never be negative (zero
+// means "use the default weight"). An out-of-range weight in content would
+// silently skew which clusters of moderates surface as concerns.
+func TestContent_WeightsNonNegative(t *testing.T) {
+	c := Load()
+	forEachItem(c, func(it Item, _ PhaseID) {
+		if it.Weight < 0 {
+			t.Errorf("item %q has negative weight %d", it.ID, it.Weight)
+		}
+	})
+}
+
 // forEachItem walks every item in the content tree.
 func forEachItem(c *Checklist, fn func(Item, PhaseID)) {
 	for _, p := range c.Phases {

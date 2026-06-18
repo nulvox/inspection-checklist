@@ -44,14 +44,46 @@ type PhaseTally struct {
 	Counts map[checklist.Severity]int   `json:"counts"`
 }
 
+// RollUp is a synthesized Concern raised when several Moderate findings pile up
+// in one category. No single item is alarming, but the cluster warrants a closer
+// look — so we surface it as a Concern without mutating the underlying findings.
+type RollUp struct {
+	Phase        checklist.PhaseID  `json:"phase"`
+	Category     string             `json:"category"`     // category ID
+	CategoryName string             `json:"categoryName"` // human-readable category name
+	Severity     checklist.Severity `json:"severity"`     // always Concern
+	Weight       int                `json:"weight"`       // summed weight of the contributing moderates
+	Contributing []string           `json:"contributing"` // titles of the moderate findings that rolled up
+}
+
 // Report is the full decision-useful output.
 type Report struct {
 	DealBreakers    []Finding        `json:"dealBreakers"`
 	Concerns        []Finding        `json:"concerns"` // severity Concern
 	Moderate        []Finding        `json:"moderate"`
 	Minor           []Finding        `json:"minor"`
+	RollUps         []RollUp         `json:"rollUps"` // clusters of moderates surfaced as concerns
 	Recommendations []Recommendation `json:"recommendations"`
 	Phases          []PhaseTally     `json:"phases"`
+}
+
+// Roll-up tuning. A category surfaces a Concern when at least rollUpMinItems
+// Moderate findings accumulate, AND their summed weight reaches rollUpThreshold.
+// The item-count floor keeps a single heavy item from synthesizing a concern on
+// its own ("several" means more than one); the weight sum lets authored content
+// mark heavier items so a smaller pile still trips.
+const (
+	rollUpMinItems   = 2
+	rollUpThreshold  = 3
+	defaultItemWeight = 1
+)
+
+// itemWeight is the item's authored weight, defaulting to 1 when unset.
+func itemWeight(it checklist.Item) int {
+	if it.Weight <= 0 {
+		return defaultItemWeight
+	}
+	return it.Weight
 }
 
 // severityRank orders severities for "concern or worse" comparisons.
@@ -73,10 +105,11 @@ func atLeastConcern(s checklist.Severity) bool {
 
 // Compute builds the report from authored content + user state.
 //
-// TODO(next-agent): refine weighting once real walkthroughs exist — e.g. let
-// content carry per-item weights, distinguish "concern" thresholds per category,
-// and decide whether multiple moderate findings in one system should roll up to
-// a concern. The structure below is intentionally simple and correct, not final.
+// Weighting: there is deliberately no composite score. Beyond bucketing findings
+// by severity, the one derived signal is the roll-up — several Moderate findings
+// clustered in a single category surface a synthesized Concern (see RollUp and
+// the rollUp* constants). Per-item Weight lets authored content mark heavier
+// items so a smaller cluster still trips the rule.
 func Compute(c *checklist.Checklist, state State) Report {
 	rep := Report{}
 	// Recommendations are keyed by inspections-required item ID and merged.
@@ -85,6 +118,8 @@ func Compute(c *checklist.Checklist, state State) Report {
 	for _, phase := range c.Phases {
 		tally := PhaseTally{Phase: phase.ID, Name: phase.Name, Counts: map[checklist.Severity]int{}}
 		for _, cat := range phase.Categories {
+			// Accumulate Moderate findings within this category for the roll-up rule.
+			mod := RollUp{Phase: phase.ID, Category: cat.ID, CategoryName: cat.Name, Severity: checklist.Concern}
 			for _, it := range cat.Items {
 				st, ok := state[it.ID]
 				if !ok || st.Severity == checklist.Unchecked || st.Severity == checklist.NA {
@@ -107,6 +142,8 @@ func Compute(c *checklist.Checklist, state State) Report {
 					rep.Concerns = append(rep.Concerns, f)
 				case checklist.Moderate:
 					rep.Moderate = append(rep.Moderate, f)
+					mod.Weight += itemWeight(it)
+					mod.Contributing = append(mod.Contributing, it.Title)
 				case checklist.Minor:
 					rep.Minor = append(rep.Minor, f)
 				}
@@ -123,6 +160,9 @@ func Compute(c *checklist.Checklist, state State) Report {
 						r.TriggeredBy = append(r.TriggeredBy, it.Title)
 					}
 				}
+			}
+			if len(mod.Contributing) >= rollUpMinItems && mod.Weight >= rollUpThreshold {
+				rep.RollUps = append(rep.RollUps, mod)
 			}
 		}
 		rep.Phases = append(rep.Phases, tally)

@@ -130,6 +130,7 @@
               "id": "fw-foundation-cracks",
               "title": "Foundation & brick cracks",
               "detail": "Look for stair-step cracks in brick/block, horizontal cracks (bowing under soil pressure), and gaps where additions meet the original structure.",
+              "weight": 2,
               "escalatesTo": "ir-structural",
               "link": { "label": "Foundation crack types (InterNACHI)", "url": "https://www.nachi.org/foundation-inspection-hhenews.htm" }
             },
@@ -179,6 +180,7 @@
               "title": "Basement / crawlspace water signs",
               "detail": "Look for a horizontal water line on the walls, white efflorescence (mineral crust), rust at the bottom of appliances/columns, and a sump pump (its presence means water comes in).",
               "tool": "flashlight",
+              "weight": 2,
               "escalatesTo": "ir-structural"
             }
           ]
@@ -240,6 +242,7 @@
               "title": "Open the panel cover: brand, double-taps, rust",
               "detail": "If safe to remove the cover, check for a hazard brand (FPE/Stab-Lok/Zinsco — see pre-brief), two wires under one breaker, scorching, rust, or a rat's nest of splices. Don't touch anything inside.",
               "unorthodox": true,
+              "weight": 2,
               "link": { "label": "FPE Stab-Lok hazards (InspectAPedia)", "url": "https://inspectapedia.com/fpe/FPE_Stab_Lok_Hazards.php" },
               "escalatesTo": "ir-electrician"
             },
@@ -268,6 +271,7 @@
               "id": "fw-furnace-age",
               "title": "Furnace & AC age and condition",
               "detail": "Read the data-plate dates, check the filter (a filthy filter hints at neglect), and look for rust, soot, or a cracked/dirty heat exchanger. Units past ~15 years are a budget item.",
+              "weight": 2,
               "escalatesTo": "ir-hvac"
             },
             {

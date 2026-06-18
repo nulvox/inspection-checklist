@@ -31,6 +31,11 @@ func sampleReport() scoring.Report {
 				Phase: checklist.PhaseFirstWalk, Severity: checklist.Minor,
 				Note: "could be hiding a stain"},
 		},
+		RollUps: []scoring.RollUp{
+			{Phase: checklist.PhaseFirstWalk, Category: "fw-structure",
+				CategoryName: "Structure & Floors", Severity: checklist.Concern, Weight: 4,
+				Contributing: []string{"Foundation & brick cracks", "Doors out of square"}},
+		},
 		Recommendations: []scoring.Recommendation{
 			{Item: checklist.Item{ID: "ir-structural", Title: "Structural engineer"},
 				TriggeredBy: []string{"Active foundation movement", "Visible floor slope"}},
@@ -129,6 +134,22 @@ func TestRender_RecommendationsWithReasons(t *testing.T) {
 	if !strings.Contains(html, "Active foundation movement") ||
 		!strings.Contains(html, "Visible floor slope") {
 		t.Error("escalation reasons (triggered-by) missing from recommendation")
+	}
+}
+
+// A roll-up (a cluster of moderate findings surfaced as a concern) must render
+// with its category name and the findings that contributed to it.
+func TestRender_RollUpsRendered(t *testing.T) {
+	html, err := Render(sampleReport(), Meta{Property: "x"})
+	if err != nil {
+		t.Fatalf("Render error: %v", err)
+	}
+	if !strings.Contains(html, "Structure &amp; Floors") {
+		t.Error("roll-up category name missing from report")
+	}
+	if !strings.Contains(html, "Foundation &amp; brick cracks") ||
+		!strings.Contains(html, "Doors out of square") {
+		t.Error("roll-up contributing findings missing from report")
 	}
 }
 

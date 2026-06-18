@@ -62,6 +62,119 @@ func fixture() *checklist.Checklist {
 	}
 }
 
+// catChecklist builds a one-phase (first-walk) checklist from the given
+// categories. It exists to exercise the category-scoped roll-up rule in
+// isolation, independent of the authored content and of the shared fixture.
+func catChecklist(cats ...checklist.Category) *checklist.Checklist {
+	return &checklist.Checklist{
+		Version: "test",
+		Phases: []checklist.Phase{{
+			ID:         checklist.PhaseFirstWalk,
+			Name:       "First-Walk DIY Checks",
+			Categories: cats,
+		}},
+	}
+}
+
+// Several Moderate findings in one category roll up to a synthesized Concern,
+// while the underlying Moderate findings remain in their own bucket. This is the
+// "no single item is alarming, but the pile is" rule.
+func TestCompute_ModeratesRollUpToConcern(t *testing.T) {
+	c := catChecklist(checklist.Category{
+		ID: "structure", Name: "Structure",
+		Items: []checklist.Item{
+			{ID: "a", Title: "Hairline cracks"},
+			{ID: "b", Title: "Sticking doors"},
+			{ID: "c", Title: "Uneven floor"},
+		},
+	})
+	state := State{
+		"a": {Severity: checklist.Moderate},
+		"b": {Severity: checklist.Moderate},
+		"c": {Severity: checklist.Moderate},
+	}
+
+	rep := Compute(c, state)
+
+	if len(rep.RollUps) != 1 {
+		t.Fatalf("want 1 roll-up, got %d: %+v", len(rep.RollUps), rep.RollUps)
+	}
+	ru := rep.RollUps[0]
+	if ru.Severity != checklist.Concern {
+		t.Errorf("roll-up severity = %q, want concern", ru.Severity)
+	}
+	if ru.Category != "structure" {
+		t.Errorf("roll-up category = %q, want structure", ru.Category)
+	}
+	if len(ru.Contributing) != 3 {
+		t.Errorf("roll-up contributing = %v, want 3 titles", ru.Contributing)
+	}
+	// The underlying moderates are not consumed by the roll-up.
+	if len(rep.Moderate) != 3 {
+		t.Errorf("want the 3 moderate findings preserved, got %d", len(rep.Moderate))
+	}
+}
+
+// The roll-up is scoped per category: moderates spread across separate
+// categories do not combine, even if the grand total would cross the threshold.
+func TestCompute_RollUpIsCategoryScoped(t *testing.T) {
+	c := catChecklist(
+		checklist.Category{ID: "structure", Name: "Structure", Items: []checklist.Item{
+			{ID: "a", Title: "A"}, {ID: "b", Title: "B"},
+		}},
+		checklist.Category{ID: "systems", Name: "Systems", Items: []checklist.Item{
+			{ID: "c", Title: "C"}, {ID: "d", Title: "D"},
+		}},
+	)
+	// Four moderates total (weight 4), but split 2+2 across categories — neither
+	// category reaches the weight threshold on its own.
+	state := State{
+		"a": {Severity: checklist.Moderate}, "b": {Severity: checklist.Moderate},
+		"c": {Severity: checklist.Moderate}, "d": {Severity: checklist.Moderate},
+	}
+
+	rep := Compute(c, state)
+
+	if len(rep.RollUps) != 0 {
+		t.Errorf("moderates in separate categories must not combine, got %+v", rep.RollUps)
+	}
+}
+
+// An authored per-item weight contributes more toward the roll-up threshold, so
+// a heavier item lets a smaller pile of moderates trip the rule.
+func TestCompute_RollUpUsesItemWeight(t *testing.T) {
+	c := catChecklist(checklist.Category{ID: "structure", Name: "Structure", Items: []checklist.Item{
+		{ID: "a", Title: "Heavy", Weight: 2}, // weight 2
+		{ID: "b", Title: "Light"},            // default weight 1
+	}})
+	// Two moderates: unweighted that is sum 2 (< threshold 3); the heavier item
+	// pushes the summed weight to 3.
+	state := State{"a": {Severity: checklist.Moderate}, "b": {Severity: checklist.Moderate}}
+
+	rep := Compute(c, state)
+
+	if len(rep.RollUps) != 1 {
+		t.Fatalf("weighted moderates should roll up, got %d: %+v", len(rep.RollUps), rep.RollUps)
+	}
+	if rep.RollUps[0].Weight != 3 {
+		t.Errorf("roll-up weight = %d, want 3 (2 + 1)", rep.RollUps[0].Weight)
+	}
+}
+
+// A single Moderate item never rolls up, however heavy — "several" means more
+// than one. Weight alone cannot synthesize a concern from one finding.
+func TestCompute_SingleModerateNeverRollsUp(t *testing.T) {
+	c := catChecklist(checklist.Category{ID: "structure", Name: "Structure", Items: []checklist.Item{
+		{ID: "a", Title: "Heavy", Weight: 5},
+	}})
+
+	rep := Compute(c, State{"a": {Severity: checklist.Moderate}})
+
+	if len(rep.RollUps) != 0 {
+		t.Errorf("one moderate must not roll up, got %+v", rep.RollUps)
+	}
+}
+
 // Tracer bullet: a DealBreaker finding surfaces in DealBreakers with its title,
 // note, and link resolved from the authored content.
 func TestCompute_DealBreakerSurfaces(t *testing.T) {
