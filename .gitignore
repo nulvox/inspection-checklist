@@ -1,0 +1,12 @@
+# Build artifacts
+web/inspect.wasm
+web/js/wasm_exec.js
+
+# docs/ is the generated Pages output. It is rebuilt by CI on deploy.
+# If you prefer to deploy from a committed docs/ instead of the Pages action,
+# delete the next line and commit the build output.
+docs/
+
+# OS / editor
+.DS_Store
+*.swp

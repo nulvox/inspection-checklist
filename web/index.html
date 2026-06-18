@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home Inspection Checklist</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Disclaimer modal: blocking, first-run, acknowledged once per device. -->
+  <div id="disclaimer-modal" class="modal" hidden>
+    <div class="modal-card">
+      <h2>Before you start — read this</h2>
+      <p>
+        This checklist is for <strong>personal use only</strong> and is provided
+        <strong>“as is”, without warranties of any kind</strong>, express or implied.
+        It is an informational aid, <strong>not professional advice</strong>, and
+        <strong>not a substitute for a licensed home, structural, electrical, pest,
+        or environmental inspection</strong>. The author assumes no liability for
+        decisions made using this tool.
+      </p>
+      <button id="disclaimer-accept">I understand — continue</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>Home Inspection Checklist</h1>
+    <p class="tagline">Pre-viewing diligence → first-walk DIY → inspections required.</p>
+    <div class="toolbar">
+      <input id="property-name" type="text" placeholder="Property address / label" aria-label="Property label">
+      <button id="btn-report">Generate report</button>
+      <button id="btn-export">Export JSON</button>
+      <button id="btn-import">Import JSON</button>
+      <button id="btn-reset" class="danger">Reset</button>
+      <input id="import-file" type="file" accept="application/json" hidden>
+    </div>
+  </header>
+
+  <nav id="phase-tabs" class="tabs" aria-label="Inspection phases"></nav>
+  <main id="phases"><p class="loading">Loading checklist…</p></main>
+
+  <footer>
+    <p class="disclaimer">
+      Personal use only · provided “as is”, no warranties · not a substitute for a
+      licensed professional inspection.
+    </p>
+  </footer>
+
+  <!-- wasm_exec.js is copied from the Go toolchain by the Makefile. -->
+  <script src="js/wasm_exec.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+{
+  "version": "0.1.0",
+  "phases": [
+    {
+      "id": "pre-viewing",
+      "name": "Pre-Viewing Diligence",
+      "blurb": "Desk research before you ever set foot on the property. For dirt-cheap / distressed / as-is homes the money traps are usually on paper (liens, back taxes, auction terms) and the safety traps are knowable in advance. Do this first so you walk in knowing what to look for.",
+      "categories": [
+        {
+          "id": "title-money",
+          "name": "Title & Money",
+          "items": [
+            {
+              "id": "pv-title-liens",
+              "title": "Title search: liens, judgments, mechanic's liens",
+              "detail": "On cheap/distressed homes the price is low for a reason. Order or pull a title search. Unpaid liens can survive the sale and become yours.",
+              "link": { "label": "What a title search covers (CFPB)", "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-title-and-title-insurance-and-why-do-i-need-them-en-163/" }
+            },
+            {
+              "id": "pv-back-taxes",
+              "title": "Back property taxes & tax-sale status",
+              "detail": "Check the county treasurer/assessor for delinquent taxes and whether the property is in a tax sale or has a redemption period attached.",
+              "link": { "label": "Find your county assessor (NACo county explorer)", "url": "https://www.naco.org/counties" }
+            },
+            {
+              "id": "pv-auction-terms",
+              "title": "Auction / foreclosure terms & redemption period",
+              "detail": "Read the auction terms: as-is, no inspection contingency, cash-only timelines, prior-owner redemption rights, and whether you actually get to walk the interior beforehand.",
+              "link": null
+            },
+            {
+              "id": "pv-permits",
+              "title": "Permit history (unpermitted work)",
+              "detail": "Pull the property's permit record at the county/city building department. Additions, decks, electrical, or plumbing with no permit can mean tear-out, fines, or insurance refusal. Compare the permit record to what the listing photos show.",
+              "link": { "label": "How to research permit history (InterNACHI)", "url": "https://www.nachi.org/" }
+            }
+          ]
+        },
+        {
+          "id": "hazards-location",
+          "name": "Hazards & Location",
+          "items": [
+            {
+              "id": "pv-sex-offender",
+              "title": "Sex-offender registry near the address",
+              "detail": "Search the national registry by address before you commit time to a viewing.",
+              "unorthodox": true,
+              "link": { "label": "National Sex Offender Public Website (NSOPW)", "url": "https://www.nsopw.gov/" }
+            },
+            {
+              "id": "pv-flood",
+              "title": "FEMA flood zone",
+              "detail": "Look up the official flood map. A cheap house in a high-risk zone carries mandatory, expensive flood insurance — and the cheap price may reflect repeated flooding.",
+              "link": { "label": "FEMA Flood Map Service Center", "url": "https://msc.fema.gov/portal/home" }
+            },
+            {
+              "id": "pv-radon-zone",
+              "title": "Radon zone (EPA map)",
+              "detail": "Check the EPA radon zone for the county so you know whether to budget for a radon test (Phase 3) and possible mitigation.",
+              "link": { "label": "EPA radon zones & local info", "url": "https://www.epa.gov/radon/find-information-about-local-radon-zones-and-state-contact-information" },
+              "escalatesTo": "ir-radon"
+            }
+          ]
+        },
+        {
+          "id": "listing-intel",
+          "name": "Listing Intel",
+          "items": [
+            {
+              "id": "pv-price-history",
+              "title": "Sale & price history",
+              "detail": "Pull prior sale prices and how long it's been on the market. A house that's been listed forever or sold repeatedly cheap is telling you something.",
+              "link": null
+            },
+            {
+              "id": "pv-old-photos",
+              "title": "Prior listing photos vs. now",
+              "detail": "Dig up old listing photos. Fresh paint, new flooring, or a wall that appeared between listings can be hiding water damage, cracks, or removed structure.",
+              "unorthodox": true,
+              "link": null
+            }
+          ]
+        },
+        {
+          "id": "red-flag-prebrief",
+          "name": "Red-Flag Pre-Brief (know before you walk)",
+          "items": [
+            {
+              "id": "pv-panel-brands",
+              "title": "Hazard panel brands to watch for",
+              "detail": "Memorize what Federal Pacific Stab-Lok, Zinsco, and FPE panels look like before the walk. They fail to trip and are a known fire risk; many insurers won't cover them. If you spot one on the walk, it escalates to an electrician.",
+              "link": { "label": "FPE Stab-Lok hazards (InspectAPedia)", "url": "https://inspectapedia.com/fpe/FPE_Stab_Lok_Hazards.php" },
+              "escalatesTo": "ir-electrician"
+            },
+            {
+              "id": "pv-bad-plumbing-types",
+              "title": "Problem plumbing/wiring eras",
+              "detail": "Know the failure-prone systems so you can spot them: polybutylene supply lines, galvanized steel (rusts shut), knob-and-tube wiring, and aluminum branch wiring. All affect insurability and budget.",
+              "link": { "label": "Polybutylene piping (InspectAPedia)", "url": "https://inspectapedia.com/plumbing/Polybutylene-Piping.php" }
+            },
+            {
+              "id": "pv-water-heater-age",
+              "title": "Water-heater & system age from serial numbers",
+              "detail": "Learn to read manufacture dates off the serial/data plate so on the walk you can tell if the water heater, furnace, or AC is at end of life.",
+              "link": { "label": "How to date a water heater (InspectAPedia)", "url": "https://inspectapedia.com/water/Water_Heater_Age.php" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "first-walk",
+      "name": "First-Walk DIY Checks",
+      "blurb": "What you can check yourself on the first viewing with a basic toolkit and DIY skills. Kit: flashlight, a marble, a phone level app, a plug-in outlet tester (with GFCI button), a fridge magnet, an IR scope, an IR/meat thermometer, a flat screwdriver, and your nose. Several of these look odd to a normal buyer — that's fine, they're the cheap signals that decide whether to spend money on Phase 3.",
+      "categories": [
+        {
+          "id": "fw-structure",
+          "name": "Structure & Floors",
+          "items": [
+            {
+              "id": "fw-marble",
+              "title": "Roll a marble across each floor",
+              "detail": "Set a marble down in several rooms. Consistent fast roll to one side, or floors visibly out of level on the phone app, suggests settling or foundation movement. This is the trigger to pay for a structural engineer.",
+              "tool": "marble",
+              "unorthodox": true,
+              "escalatesTo": "ir-structural",
+              "link": { "label": "Reading foundation/settlement cracks (InterNACHI)", "url": "https://www.nachi.org/foundation-walls-piers.htm" }
+            },
+            {
+              "id": "fw-foundation-cracks",
+              "title": "Foundation & brick cracks",
+              "detail": "Look for stair-step cracks in brick/block, horizontal cracks (bowing under soil pressure), and gaps where additions meet the original structure.",
+              "escalatesTo": "ir-structural",
+              "link": { "label": "Foundation crack types (InterNACHI)", "url": "https://www.nachi.org/foundation-walls-piers.htm" }
+            },
+            {
+              "id": "fw-doors-square",
+              "title": "Doors & windows out of square",
+              "detail": "Sticking doors, gaps that taper, and windows that won't latch can be cosmetic — or a sign the house has moved. Combine with the marble result.",
+              "escalatesTo": "ir-structural"
+            }
+          ]
+        },
+        {
+          "id": "fw-moisture",
+          "name": "Moisture & Mold",
+          "items": [
+            {
+              "id": "fw-ir-damp",
+              "title": "IR-scope walls & ceilings for damp / cold spots",
+              "detail": "Sweep the IR scope across ceilings, exterior walls, and under windows. Cold/wet patches show as temperature anomalies and reveal hidden leaks or missing insulation that the eye misses.",
+              "tool": "IR scope",
+              "unorthodox": true,
+              "escalatesTo": "ir-mold"
+            },
+            {
+              "id": "fw-fresh-paint",
+              "title": "Fresh paint patches (especially ceilings)",
+              "detail": "A single freshly painted patch — particularly on a ceiling or above a window — is often hiding a water stain. Note it and IR-scope behind it.",
+              "unorthodox": true,
+              "escalatesTo": "ir-mold"
+            },
+            {
+              "id": "fw-nose-musty",
+              "title": "Nose test: musty / mildew smell",
+              "detail": "A musty basement or closet smell means moisture and likely mold even when nothing is visible. Trust your nose.",
+              "tool": "nose",
+              "unorthodox": true,
+              "escalatesTo": "ir-mold"
+            },
+            {
+              "id": "fw-under-sink",
+              "title": "Under sinks, around tubs & toilets",
+              "detail": "Open every cabinet under a sink; feel for soft, swollen, or stained particleboard and active drips. Check the floor around tubs and toilet bases.",
+              "tool": "flashlight"
+            },
+            {
+              "id": "fw-basement-water",
+              "title": "Basement / crawlspace water signs",
+              "detail": "Look for a horizontal water line on the walls, white efflorescence (mineral crust), rust at the bottom of appliances/columns, and a sump pump (its presence means water comes in).",
+              "tool": "flashlight",
+              "escalatesTo": "ir-structural"
+            }
+          ]
+        },
+        {
+          "id": "fw-plumbing",
+          "name": "Plumbing",
+          "items": [
+            {
+              "id": "fw-flush-all",
+              "title": "Flush every toilet & run every tap at once",
+              "detail": "Open all the taps and flush the toilets simultaneously. Watch for pressure crashing, slow or gurgling drains, and toilets that won't refill — a cheap stress test of supply and drainage.",
+              "unorthodox": true,
+              "escalatesTo": "ir-sewer-scope"
+            },
+            {
+              "id": "fw-rock-toilet",
+              "title": "Rock each toilet",
+              "detail": "Gently rock each toilet. Movement means a failed wax seal or a rotten subfloor/flange under it — a wet, smelly repair.",
+              "unorthodox": true
+            },
+            {
+              "id": "fw-magnet-pipes",
+              "title": "Magnet-test the pipes",
+              "detail": "A fridge magnet sticks to galvanized steel and cast iron but not copper, brass, or plastic. Use it to quickly identify rust-prone galvanized supply lines and aging cast-iron drains.",
+              "tool": "fridge magnet",
+              "unorthodox": true
+            },
+            {
+              "id": "fw-nose-sewer",
+              "title": "Nose test: sewer gas",
+              "detail": "A sewer/rotten-egg smell near drains or in the yard points at a dry trap, a vent problem, or a broken lateral. Escalate to a sewer scope.",
+              "tool": "nose",
+              "unorthodox": true,
+              "escalatesTo": "ir-sewer-scope"
+            },
+            {
+              "id": "fw-water-heater",
+              "title": "Water heater: age, leaks, TPR valve",
+              "detail": "Read the age off the data plate (Phase 1 skill), look for rust/leaks at the base, and confirm the temperature-pressure relief valve has a discharge pipe running down. A tank past ~10–12 years is borrowed time.",
+              "escalatesTo": "ir-general"
+            }
+          ]
+        },
+        {
+          "id": "fw-electrical",
+          "name": "Electrical",
+          "items": [
+            {
+              "id": "fw-outlet-tester",
+              "title": "Outlet tester + GFCI trip on every receptacle",
+              "detail": "Plug the $5 tester into every accessible outlet to catch open grounds, reversed polarity, and dead circuits. Hit the GFCI test button in kitchens/baths/garage/exterior to confirm protection trips.",
+              "tool": "outlet tester",
+              "unorthodox": true,
+              "escalatesTo": "ir-electrician"
+            },
+            {
+              "id": "fw-panel-inspect",
+              "title": "Open the panel cover: brand, double-taps, rust",
+              "detail": "If safe to remove the cover, check for a hazard brand (FPE/Stab-Lok/Zinsco — see pre-brief), two wires under one breaker, scorching, rust, or a rat's nest of splices. Don't touch anything inside.",
+              "unorthodox": true,
+              "link": { "label": "FPE Stab-Lok hazards (InspectAPedia)", "url": "https://inspectapedia.com/fpe/FPE_Stab_Lok_Hazards.php" },
+              "escalatesTo": "ir-electrician"
+            },
+            {
+              "id": "fw-knob-tube-alum",
+              "title": "Knob-and-tube / aluminum wiring",
+              "detail": "In the basement, attic, and at outlets look for ceramic knob-and-tube wiring or aluminum branch wires (dull, marked AL). Both are insurability and fire issues.",
+              "link": { "label": "Aluminum wiring hazards (CPSC)", "url": "https://www.cpsc.gov/safety-education/safety-guides/home-electrical-safety/aluminum-wiring" },
+              "escalatesTo": "ir-electrician"
+            }
+          ]
+        },
+        {
+          "id": "fw-hvac",
+          "name": "Heating & Cooling",
+          "items": [
+            {
+              "id": "fw-temp-differential",
+              "title": "Thermometer at the registers (temp differential)",
+              "detail": "Run the system and hold an IR/meat thermometer at a supply register and a return. Cooling should drop ~14–20°F; heating should be warm and steady. A weak or wrong differential means a tired or failing system.",
+              "tool": "thermometer",
+              "unorthodox": true,
+              "escalatesTo": "ir-hvac"
+            },
+            {
+              "id": "fw-furnace-age",
+              "title": "Furnace & AC age and condition",
+              "detail": "Read the data-plate dates, check the filter (a filthy filter hints at neglect), and look for rust, soot, or a cracked/dirty heat exchanger. Units past ~15 years are a budget item.",
+              "escalatesTo": "ir-hvac"
+            },
+            {
+              "id": "fw-nose-oil-gas",
+              "title": "Nose test: heating oil / gas",
+              "detail": "An oily smell or a buried fill pipe in the yard suggests a current or abandoned oil tank. A gas smell near appliances needs immediate professional attention.",
+              "tool": "nose",
+              "unorthodox": true,
+              "escalatesTo": "ir-oil-tank"
+            }
+          ]
+        },
+        {
+          "id": "fw-roof-attic",
+          "name": "Roof, Attic & Exterior",
+          "items": [
+            {
+              "id": "fw-attic",
+              "title": "Attic: daylight, stains, vents, vermiculite",
+              "detail": "In the attic look for daylight through the roof, water stains on the sheathing, bath fans dumping into the attic instead of outside, and loose grey-brown pebbly vermiculite insulation (possible asbestos — do not disturb).",
+              "tool": "flashlight",
+              "unorthodox": true,
+              "link": { "label": "Vermiculite/asbestos insulation (EPA)", "url": "https://www.epa.gov/asbestos/protect-your-family-asbestos-contaminated-vermiculite-insulation" },
+              "escalatesTo": "ir-asbestos-lead"
+            },
+            {
+              "id": "fw-roof-ground",
+              "title": "Roof from the ground",
+              "detail": "Step back and sight along the ridge for sag, look for missing/curling shingles, multiple shingle layers, and rusted flashing. Note the apparent age.",
+              "escalatesTo": "ir-roof"
+            },
+            {
+              "id": "fw-grading",
+              "title": "Grading & downspouts",
+              "detail": "Walk the perimeter: ground should slope away from the foundation, and downspouts should discharge well away from the house. Negative grading is the root cause of most wet basements.",
+              "escalatesTo": "ir-structural"
+            },
+            {
+              "id": "fw-tap-tiles",
+              "title": "Tap the tile (hollow = delaminating)",
+              "detail": "Knuckle-tap floor and wall tile. A hollow drum sound means the tile has separated from the substrate — common over a failing or wet subfloor.",
+              "unorthodox": true
+            }
+          ]
+        },
+        {
+          "id": "fw-pests",
+          "name": "Pests / Wood-Destroying Organisms",
+          "items": [
+            {
+              "id": "fw-wdo-quicklook",
+              "title": "WDO quick look: mud tubes, frass, probe",
+              "detail": "Check the sill plate, basement framing, and exterior wood for termite mud tubes, sawdust-like frass, and hollow wood. Gently press a screwdriver into suspect framing — if it sinks, escalate to a full WDO inspection.",
+              "tool": "screwdriver",
+              "unorthodox": true,
+              "link": { "label": "NPMA-33 WDO inspection report (HUD)", "url": "https://www.hud.gov/sites/dfiles/OCHCO/documents/NPMA33.pdf" },
+              "escalatesTo": "ir-wdo"
+            }
+          ]
+        },
+        {
+          "id": "fw-operation",
+          "name": "Operation Sweep",
+          "items": [
+            {
+              "id": "fw-windows-doors",
+              "title": "Open & close every window and door",
+              "detail": "Operate every window and exterior door. Painted-shut, won't-latch, or broken-balance windows are both a cost and a clue about movement and past DIY.",
+              "escalatesTo": "ir-structural"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inspections-required",
+      "name": "Inspections Required",
+      "blurb": "Specialist inspections to commission before closing. Items here light up automatically when a matching first-walk finding is flagged a concern or worse, but you can add any of them manually. None of these are optional substitutes for the others — and none of this app is a substitute for them.",
+      "categories": [
+        {
+          "id": "ir-structural-cat",
+          "name": "Structure",
+          "items": [
+            {
+              "id": "ir-structural",
+              "title": "Structural engineer evaluation",
+              "detail": "Triggered by sloping floors (marble test), foundation cracks, or doors out of square. A licensed structural/PE evaluation tells you whether movement is active and what repair costs — the single biggest deal-breaker on cheap homes.",
+              "link": { "label": "When to call a structural engineer (InterNACHI)", "url": "https://www.nachi.org/foundation-walls-piers.htm" }
+            }
+          ]
+        },
+        {
+          "id": "ir-systems-cat",
+          "name": "Systems",
+          "items": [
+            {
+              "id": "ir-electrician",
+              "title": "Licensed electrician (panel & wiring)",
+              "detail": "For hazard panels (FPE/Zinsco), aluminum/knob-and-tube wiring, or failed GFCI/outlet tests. Get a quote for panel replacement and remediation up front.",
+              "link": { "label": "FPE Stab-Lok hazards (InspectAPedia)", "url": "https://inspectapedia.com/fpe/FPE_Stab_Lok_Hazards.php" }
+            },
+            {
+              "id": "ir-hvac",
+              "title": "HVAC technician full service",
+              "detail": "For a tired system, bad temp differential, or a suspected cracked heat exchanger (a carbon-monoxide risk). Includes the furnace, AC, and combustion safety.",
+              "link": null
+            },
+            {
+              "id": "ir-sewer-scope",
+              "title": "Sewer scope (camera the lateral)",
+              "detail": "A camera run from the house to the city main or septic. Catches collapsed, root-filled, or Orangeburg laterals — a four-to-five-figure repair that no walkthrough can see. The inspection DIYers skip most.",
+              "link": { "label": "Sewer line inspection (InspectAPedia)", "url": "https://inspectapedia.com/septic/Sewer_Line_Inspection.php" }
+            }
+          ]
+        },
+        {
+          "id": "ir-env-cat",
+          "name": "Environmental & Pests",
+          "items": [
+            {
+              "id": "ir-wdo",
+              "title": "WDO / termite inspection (NPMA-33)",
+              "detail": "A licensed inspector files the standardized NPMA-33 Wood-Destroying Insect report. Required for many loans and the definitive record of active or prior infestation and damage.",
+              "link": { "label": "NPMA-33 WDO inspection report (HUD)", "url": "https://www.hud.gov/sites/dfiles/OCHCO/documents/NPMA33.pdf" }
+            },
+            {
+              "id": "ir-radon",
+              "title": "Radon test",
+              "detail": "A short- or long-term test, especially in EPA high-radon zones. Mitigation is usually affordable but only if you know to budget for it.",
+              "link": { "label": "EPA Citizen's Guide to Radon", "url": "https://www.epa.gov/radon/citizens-guide-radon-guide-protecting-yourself-and-your-family-radon" }
+            },
+            {
+              "id": "ir-mold",
+              "title": "Mold / moisture assessment",
+              "detail": "For musty smells, IR-scope wet spots, or paint-covered stains. A professional assessment finds the source and scope before you buy the remediation bill.",
+              "link": null
+            },
+            {
+              "id": "ir-oil-tank",
+              "title": "Oil-tank sweep (UST)",
+              "detail": "For oil-heat history or a buried fill pipe. A geophysical sweep finds abandoned underground tanks; a leaking one is an environmental-cleanup liability that can dwarf the house price.",
+              "link": { "label": "Oil tank abandonment & leaks (InspectAPedia)", "url": "https://inspectapedia.com/heat/Oil_Storage_Tanks.php" }
+            },
+            {
+              "id": "ir-asbestos-lead",
+              "title": "Asbestos & lead testing",
+              "detail": "For vermiculite insulation, old floor tile/pipe wrap, and any home built before 1978 (lead paint). Testing scopes the abatement cost and your renovation constraints.",
+              "link": { "label": "Lead in older homes (EPA)", "url": "https://www.epa.gov/lead" }
+            }
+          ]
+        },
+        {
+          "id": "ir-envelope-cat",
+          "name": "Envelope & Other",
+          "items": [
+            {
+              "id": "ir-roof",
+              "title": "Roof inspection (roofer)",
+              "detail": "For a sagging ridge, missing shingles, or multiple layers. Get remaining-life and replacement-cost numbers.",
+              "link": null
+            },
+            {
+              "id": "ir-chimney",
+              "title": "Chimney Level 2 inspection",
+              "detail": "If there's a fireplace or wood/oil flue. A Level 2 camera scan finds liner cracks and blockages that are a fire/CO risk.",
+              "link": null
+            },
+            {
+              "id": "ir-well-septic",
+              "title": "Well & septic inspection",
+              "detail": "If not on municipal water/sewer. Test the well water and inspect/pump the septic; a failed drainfield is a major expense.",
+              "link": null
+            },
+            {
+              "id": "ir-general",
+              "title": "Licensed general home inspection",
+              "detail": "Even after your DIY walk, a full inspection to a recognized Standard of Practice is the baseline professional record. Bring your flagged findings to focus it.",
+              "link": { "label": "InterNACHI Standards of Practice", "url": "https://www.nachi.org/sop.htm" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

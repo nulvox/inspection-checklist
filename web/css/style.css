@@ -1,0 +1,58 @@
+/* Minimal vanilla styling — scaffold only.
+   TODO(next-agent): theme to match the look of fate4.tools / gasslands.tools. */
+:root {
+  --ok: #27ae60;
+  --minor: #f1c40f;
+  --moderate: #e67e22;
+  --concern: #d35400;
+  --dealbreaker: #c0392b;
+  --na: #95a5a6;
+  --bg: #fafafa;
+  --card: #fff;
+  --ink: #1a1a1a;
+}
+* { box-sizing: border-box; }
+body {
+  font: 15px/1.5 system-ui, -apple-system, sans-serif;
+  margin: 0; background: var(--bg); color: var(--ink);
+}
+header, nav, main, footer { max-width: 52rem; margin: 0 auto; padding: 0 1rem; }
+header h1 { margin: 1rem 0 0; }
+.tagline { color: #666; margin: .25rem 0 1rem; }
+.toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.toolbar input[type=text] { flex: 1 1 14rem; padding: .4rem .6rem; }
+button { padding: .4rem .8rem; cursor: pointer; }
+button.danger { color: #c0392b; }
+
+.tabs { display: flex; gap: .25rem; border-bottom: 2px solid #ddd; }
+.tabs button { border: none; background: none; padding: .6rem .9rem; font-weight: 600; opacity: .55; }
+.tabs button[aria-selected="true"] { opacity: 1; border-bottom: 3px solid var(--ink); }
+
+.phase-blurb { color: #555; background: #fff; border-left: 3px solid #ccc; padding: .6rem .8rem; margin: 1rem 0; }
+.category { margin: 1rem 0; }
+.category h3 { margin: .5rem 0; border-bottom: 1px solid #eee; padding-bottom: .25rem; }
+
+.item { background: var(--card); border: 1px solid #eee; border-radius: 6px; padding: .6rem .8rem; margin: .5rem 0; }
+.item-title { font-weight: 600; }
+.item-detail { color: #555; font-size: .92em; margin: .25rem 0; }
+.item-meta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; font-size: .85em; }
+.badge { font-size: .72em; padding: .1rem .4rem; border-radius: 999px; background: #eee; }
+.badge.diy { background: #e8f0fe; color: #1a56b0; }
+.badge.tool { background: #f0e8fe; color: #5b1ab0; }
+.badge.escalates { background: #fdeaea; color: #b01a1a; }
+.item a { font-size: .85em; }
+.item select { padding: .2rem; }
+.item textarea { width: 100%; margin-top: .35rem; font: inherit; min-height: 2rem; }
+
+/* severity color cue on the select */
+select[data-sev="dealbreaker"] { background: #fdecea; }
+select[data-sev="concern"], select[data-sev="moderate"] { background: #fff4e5; }
+select[data-sev="ok"] { background: #eafaf0; }
+
+footer { margin: 2rem auto; }
+.disclaimer { font-size: .8em; color: #888; border-top: 1px solid #ddd; padding-top: .75rem; }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 10; }
+.modal[hidden] { display: none; }
+.modal-card { background: #fff; max-width: 34rem; padding: 1.25rem 1.5rem; border-radius: 8px; }
+.modal-card button { margin-top: .5rem; }
