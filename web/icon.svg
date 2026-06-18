@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Inspection checklist">
+  <rect width="512" height="512" rx="96" fill="#2f6fed"/>
+  <rect x="136" y="96" width="240" height="320" rx="24" fill="#ffffff"/>
+  <rect x="196" y="72" width="120" height="56" rx="20" fill="#1b1f24"/>
+  <g fill="none" stroke="#2f6fed" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M176 196l28 28 48-56"/>
+    <path d="M176 292l28 28 48-56"/>
+  </g>
+  <g stroke="#c2c9d0" stroke-width="20" stroke-linecap="round">
+    <line x1="280" y1="206" x2="340" y2="206"/>
+    <line x1="280" y1="302" x2="340" y2="302"/>
+  </g>
+</svg>

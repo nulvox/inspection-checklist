@@ -1,6 +1,11 @@
-// Package report renders a scoring.Report into a self-contained, printable HTML
-// document. The user opens it and uses the browser's "Save as PDF". No external
-// libraries — keeps the build pure Go + vanilla and fully offline.
+// Package report renders a scoring.Report into a printable HTML document. The
+// user opens it and uses the browser's "Save as PDF" to keep a copy. No external
+// libraries — pure Go + vanilla, fully offline.
+//
+// Photos are NOT embedded here (see adr/0002): a finding's photos render as
+// <img data-photo-id> placeholders with no src. The frontend hydrates each src
+// from IndexedDB (object URLs) before printing. A finding may carry several
+// photos; the template ranges over them.
 package report
 
 import (
@@ -131,15 +136,21 @@ var reportTmpl = template.Must(template.New("report").
   .badge.dealbreaker{background:var(--db)} .badge.concern{background:var(--cn)}
   .badge.moderate{background:var(--md)} .badge.minor{background:var(--mn)}
   .note{color:#555;font-style:italic;margin:.15rem 0 0}
+  .photos{display:flex;flex-wrap:wrap;gap:.4rem;margin:.35rem 0}
+  .photo{max-width:12rem;max-height:9rem;object-fit:cover;border:1px solid #ddd;border-radius:.25rem;background:#f3f3f3}
+  @media print{.photo{max-width:9rem;max-height:7rem;page-break-inside:avoid}}
   .triggers{color:#555;font-size:13px;margin:.15rem 0 0}
   .none{color:#2e7d32}
   .disclaimer{margin-top:2.5rem;padding-top:1rem;border-top:1px solid #ccc;font-size:12px;color:#777}
   a{color:var(--rec)}
+  .savehint{background:#eef4ff;border:1px solid #cdddff;color:#1a3a6b;padding:.5rem .75rem;border-radius:.4rem;font-size:13px;margin:.75rem 0}
   @media print{body{margin:0;max-width:none}.noprint{display:none}}
 </style></head><body>
 
 <h1>Home Inspection Report</h1>
 <p class="sub">{{if .Meta.Property}}{{.Meta.Property}} — {{end}}{{.Meta.Date}}</p>
+
+<p class="savehint noprint">📄 This report is a live page, not a saved file. To keep a copy (and to bundle any photos into it), use your browser's <strong>Print → Save as PDF</strong>.</p>
 
 <h2>Summary by phase</h2>
 <table>
@@ -171,7 +182,7 @@ var reportTmpl = template.Must(template.New("report").
 <h2>Findings by phase</h2>
 {{range .PhaseGroups}}
 <h3>{{.Name}}</h3>
-{{range .Findings}}<div class="finding {{.Severity}}"><span class="badge {{.Severity}}">{{sevLabel .Severity}}</span> <strong>{{.Title}}</strong>{{if .Link}} — <a href="{{.Link.URL}}">{{.Link.Label}}</a>{{end}}{{if .Note}}<p class="note">{{.Note}}</p>{{end}}</div>{{end}}
+{{range .Findings}}<div class="finding {{.Severity}}"><span class="badge {{.Severity}}">{{sevLabel .Severity}}</span> <strong>{{.Title}}</strong>{{if .Link}} — <a href="{{.Link.URL}}">{{.Link.Label}}</a>{{end}}{{if .Note}}<p class="note">{{.Note}}</p>{{end}}{{if .PhotoIDs}}<div class="photos">{{range .PhotoIDs}}<img class="photo" data-photo-id="{{.}}" alt="finding photo">{{end}}</div>{{end}}</div>{{end}}
 {{end}}
 {{end}}
 

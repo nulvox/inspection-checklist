@@ -24,7 +24,7 @@ These were resolved in a grilling session. Don't relitigate without reason.
 | 2 | Output | **Deal-breakers + weighted concerns. NO single composite score** (a home isn't a number). |
 | 3 | Phases cross-link | **Yes** — a flagged first-walk item auto-recommends a required inspection (e.g. marble/slope → structural engineer). |
 | 4 | Photos | **Reserve `photoRef` field; v1 is text-notes only.** Photos = v2. |
-| 5 | Report format | **Self-contained printable HTML** (browser “Save as PDF”). No PDF library. JSON export for raw data. |
+| 5 | Report format | **Printable HTML, browser “Save as PDF”.** No PDF library. JSON export for raw data. ⚠️ v2 **supersedes the "self-contained single file" part** — photos are hydrated from IndexedDB into an ephemeral report and print-to-PDF is the portable artifact. See `adr/0002`. |
 | 6 | Content source of truth | **`internal/checklist/checklist.json`, embedded into the Go binary** via `//go:embed`. Go owns scoring/escalation/report; JS only renders + captures. |
 | 7 | Persistence | **localStorage** (single active inspection) + JSON import/export, like fate4.tools. |
 | 8 | Disclaimer | **Blocking first-run modal (once/device) + persistent footer + reprinted on every report.** |
@@ -108,11 +108,23 @@ on push to `main`.
    printable popup.
 6. Verify procedure links.
 
-**v2 (deferred by decision):**
-- Photo capture per item → IndexedDB + thumbnails, embedded in the report
-  (the schema already reserves `photoRef`).
-- Multiple property profiles + a side-by-side comparison view.
-- PWA / offline install for on-site use with no signal.
+**v2 (scope settled 2026-06-18 — all four ship together; no v3 until the tool is
+actually in use). Design decisions recorded in `adr/`; glossary in `CONTEXT.md`.**
+
+1. **Multiple property Profiles** — clobber the v1 key, new `:v2` shape
+   `{profiles:{id:{name,…,state}}, activeId}`. Name moves into the Profile.
+   (`adr/0003`)
+2. **Side-by-side comparison** — JS-only, N `computeReport` calls in columns.
+   Aligned difference matrix, **no ranking / no composite score**. (`adr/0001`)
+3. **Per-item Photos** — runtime state `photoIds:[]` (kill `photoRef` on the
+   content `Item`); Blobs in IndexedDB; downscale-on-capture with a per-photo
+   full-res opt-out; report hydrates `<img>` via object URLs; export carries
+   base64. (`adr/0002`)
+4. **PWA offline shell** — caching shim only (SW + manifest), relative paths for
+   the Pages subpath, Makefile-stamped SW version for cache-busting. (`adr/0004`)
+
+Forced order: Profiles first (schema spine), then Comparison (cheap on top),
+Photos and PWA are the heavyweight cross-cutting pieces.
 
 ## 7. Disclaimer
 

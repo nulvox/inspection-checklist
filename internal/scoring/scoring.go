@@ -14,6 +14,9 @@ import "github.com/nulvox/inspection-checklist/internal/checklist"
 type ItemState struct {
 	Severity checklist.Severity `json:"severity"`
 	Note     string             `json:"note"`
+	// PhotoIDs reference user-captured images (Blobs in IndexedDB; see adr/0002).
+	// A finding may have several — never bound to one. Empty when no photos.
+	PhotoIDs []string `json:"photoIds,omitempty"`
 }
 
 // State maps item ID -> what the user found. Items absent from the map are
@@ -28,6 +31,9 @@ type Finding struct {
 	Severity checklist.Severity `json:"severity"`
 	Note     string             `json:"note"`
 	Link     *checklist.Link    `json:"link,omitempty"`
+	// PhotoIDs carries the finding's photo references through to the report,
+	// where each becomes an <img data-photo-id> placeholder hydrated by JS.
+	PhotoIDs []string `json:"photoIds,omitempty"`
 }
 
 // Recommendation is an inspections-required item surfaced because a first-walk
@@ -134,6 +140,7 @@ func Compute(c *checklist.Checklist, state State) Report {
 					Severity: st.Severity,
 					Note:     st.Note,
 					Link:     it.Link,
+					PhotoIDs: st.PhotoIDs,
 				}
 				switch st.Severity {
 				case checklist.DealBreaker:

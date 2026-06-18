@@ -76,6 +76,34 @@ func catChecklist(cats ...checklist.Category) *checklist.Checklist {
 	}
 }
 
+// Photos captured on an item flow through to the Finding as PhotoIDs, and a
+// finding is never limited to a single photo. The report renders one placeholder
+// per id (see report package), so the slice must survive Compute intact.
+func TestCompute_PhotoIDsFlowToFinding(t *testing.T) {
+	c := catChecklist(checklist.Category{
+		ID: "structure", Name: "Structure",
+		Items: []checklist.Item{{ID: "a", Title: "Foundation crack"}},
+	})
+	state := State{
+		"a": {Severity: checklist.DealBreaker, PhotoIDs: []string{"p1", "p2", "p3"}},
+	}
+
+	rep := Compute(c, state)
+
+	if len(rep.DealBreakers) != 1 {
+		t.Fatalf("want 1 deal-breaker, got %d", len(rep.DealBreakers))
+	}
+	got := rep.DealBreakers[0].PhotoIDs
+	if len(got) != 3 {
+		t.Fatalf("want 3 photo ids carried to finding, got %d: %v", len(got), got)
+	}
+	for i, want := range []string{"p1", "p2", "p3"} {
+		if got[i] != want {
+			t.Errorf("photo id[%d] = %q, want %q", i, got[i], want)
+		}
+	}
+}
+
 // Several Moderate findings in one category roll up to a synthesized Concern,
 // while the underlying Moderate findings remain in their own bucket. This is the
 // "no single item is alarming, but the pile is" rule.

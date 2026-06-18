@@ -240,3 +240,48 @@ footer { margin: 2.5rem auto; }
 }
 .modal-card h2 { margin-top: 0; }
 .modal-card button { margin-top: .75rem; background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+
+/* ---- profile bar -------------------------------------------------------- */
+
+.profilebar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .25rem 0 .75rem; }
+.profile-pick { display: flex; align-items: center; gap: .4rem; color: var(--ink-muted); font-size: .9em; font-weight: 600; }
+.profilebar select, .profilebar input[type=text] {
+  padding: .4rem .55rem; font: inherit; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: 7px;
+}
+.profilebar input[type=text] { flex: 1 1 14rem; }
+.profilebar select:focus-visible, .profilebar input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+
+/* ---- item photos -------------------------------------------------------- */
+
+.item-photos { margin-top: .5rem; }
+.photo-bar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.photo-add { font-size: .85em; padding: .3rem .65rem; }
+.photo-fullres { font-size: .8em; color: var(--ink-muted); display: inline-flex; align-items: center; gap: .25rem; cursor: pointer; }
+.photo-grid { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+.thumb { position: relative; width: 5.5rem; height: 5.5rem; border-radius: 7px; overflow: hidden; border: 1px solid var(--border); background: var(--surface-2); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb .badge { position: absolute; left: .2rem; bottom: .2rem; font-size: .6em; }
+.thumb-del {
+  position: absolute; top: .15rem; right: .15rem; width: 1.35rem; height: 1.35rem;
+  padding: 0; line-height: 1; border-radius: 999px; font-size: .8em;
+  background: rgba(8,12,18,.65); color: #fff; border: none;
+}
+.thumb-del:hover { background: var(--dealbreaker); }
+
+/* ---- comparison --------------------------------------------------------- */
+
+.compare-table { table-layout: auto; }
+.compare-table th { background: var(--surface-2); font-weight: 600; }
+.compare-rowhead { font-weight: 600; border-left: 4px solid var(--border-strong); }
+.compare-rowhead.dealbreaker { border-left-color: var(--dealbreaker); }
+.compare-rowhead.concern { border-left-color: var(--concern); }
+.compare-rowhead.moderate { border-left-color: var(--moderate); }
+.compare-rowhead.minor { border-left-color: var(--minor); }
+.compare-rowhead.rec { border-left-color: var(--accent); }
+.compare-phase { margin: 1rem 0 .35rem; font-size: .95rem; color: var(--ink-muted); }
+.compare-differs { background: color-mix(in srgb, var(--concern) 10%, transparent); }
+.compare-table .badge.dealbreaker { background: var(--dealbreaker); color: #fff; border-color: transparent; }
+.compare-table .badge.concern { background: var(--concern); color: #fff; border-color: transparent; }
+.compare-table .badge.moderate { background: var(--moderate); color: #fff; border-color: transparent; }
+.compare-table .badge.minor { background: var(--minor); color: #fff; border-color: transparent; }

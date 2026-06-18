@@ -153,6 +153,36 @@ func TestRender_RollUpsRendered(t *testing.T) {
 	}
 }
 
+// A finding's photos render as src-less <img data-photo-id> placeholders (the
+// frontend hydrates them from IndexedDB — see adr/0002), one per photo, so a
+// finding is never limited to a single image.
+func TestRender_PhotoPlaceholders(t *testing.T) {
+	rep := scoring.Report{
+		DealBreakers: []scoring.Finding{
+			{ItemID: "fw-foundation", Title: "Active foundation movement",
+				Phase: checklist.PhaseFirstWalk, Severity: checklist.DealBreaker,
+				PhotoIDs: []string{"ph-aaa", "ph-bbb"}},
+		},
+		Phases: []scoring.PhaseTally{
+			{Phase: checklist.PhaseFirstWalk, Name: "First-Walk DIY Checks",
+				Counts: map[checklist.Severity]int{checklist.DealBreaker: 1}},
+		},
+	}
+	html, err := Render(rep, Meta{Property: "x"})
+	if err != nil {
+		t.Fatalf("Render error: %v", err)
+	}
+	for _, id := range []string{"ph-aaa", "ph-bbb"} {
+		if !strings.Contains(html, `data-photo-id="`+id+`"`) {
+			t.Errorf("photo placeholder for %q missing", id)
+		}
+	}
+	// Placeholders must carry no src — JS fills it in at print time.
+	if strings.Contains(html, `<img class="photo" data-photo-id="ph-aaa" src=`) {
+		t.Error("photo placeholder must not carry a src (hydrated client-side)")
+	}
+}
+
 // A clean report (nothing flagged) renders without panic and states there are no
 // deal-breakers, while still printing the tally table and disclaimer.
 func TestRender_EmptyReport(t *testing.T) {

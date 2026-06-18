@@ -47,8 +47,10 @@ type Item struct {
 	// should be recommended when this item is flagged Concern or worse.
 	// e.g. the marble/slope item escalates to "ir-structural".
 	EscalatesTo string `json:"escalatesTo,omitempty"`
-	// PhotoRef is reserved for v2 photo capture (see PLAN.md). Unused in v1.
-	PhotoRef string `json:"photoRef,omitempty"`
+	// Photos are NOT here: a captured photo is runtime state, not authored
+	// content, so it lives next to the user's finding (scoring.ItemState.PhotoIDs)
+	// with bytes in IndexedDB — see adr/0002. The old reserved photoRef field was
+	// removed for that reason.
 }
 
 // Category groups items within a phase.

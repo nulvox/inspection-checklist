@@ -27,6 +27,23 @@ Output is **deal-breakers first**, then weighted concerns, then the inspections
 your findings escalate to — printable to PDF and exportable as JSON. No fake
 “87/100” score: a house isn't a number.
 
+## Multiple properties, photos, offline
+
+- **Property profiles** — inspect several houses, switch between them, and keep
+  each one's findings separate. Saved in your browser (localStorage).
+- **Side-by-side comparison** — line properties up in columns to see where they
+  differ. Deliberately **no ranking and no combined score** — it surfaces
+  differences, it doesn't crown a winner.
+- **Per-item photos** — attach as many photos as you like to any finding;
+  they're downscaled by default (with a full-res opt-out) and stored locally in
+  IndexedDB. They appear in the printable report.
+- **Works offline** — it's a PWA: load it once and it runs at the property with
+  no signal. Your data never leaves the device.
+
+> The generated report is a live page, not a saved file — use your browser's
+> **Print → Save as PDF** to keep a copy (that's also what bundles the photos in).
+> Move data between devices with **Export** / **Import**.
+
 ## Quick start
 
 ```bash
@@ -38,6 +55,7 @@ for the build brief. Deploys to GitHub Pages via `.github/workflows/deploy.yml`.
 
 ## Status
 
-Scaffold + full checklist content authored; core scoring/escalation/report
-working. Polish and v2 (photos, multi-property compare) are tracked in
-[`PLAN.md`](PLAN.md). MIT licensed.
+Full checklist content authored; scoring/escalation/report working; v2 shipped —
+property profiles, side-by-side comparison, per-item photos, and offline PWA
+install. Design decisions are recorded in [`adr/`](adr/) with a glossary in
+[`CONTEXT.md`](CONTEXT.md). MIT licensed.

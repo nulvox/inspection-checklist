@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2f6fed">
   <title>Home Inspection Checklist</title>
   <!-- Apply the saved theme before first paint to avoid a flash. -->
   <script>
@@ -11,6 +12,8 @@
       if (t) document.documentElement.dataset.theme = t;
     } catch (e) {}
   </script>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -33,20 +36,31 @@
   <header>
     <h1>Home Inspection Checklist</h1>
     <p class="tagline">Pre-viewing diligence → first-walk DIY → inspections required.</p>
+    <div class="profilebar">
+      <label class="profile-pick">Property
+        <select id="profile-select" aria-label="Active property"></select>
+      </label>
+      <input id="profile-name" type="text" placeholder="Property address / label" aria-label="Property name">
+      <button id="btn-new-profile" type="button">＋ New</button>
+      <button id="btn-del-profile" type="button" class="danger">Delete</button>
+    </div>
     <div class="toolbar">
-      <input id="property-name" type="text" placeholder="Property address / label" aria-label="Property label">
       <button id="btn-summary">Summary</button>
+      <button id="btn-compare">Compare</button>
       <button id="btn-report">Generate report</button>
-      <button id="btn-export">Export JSON</button>
-      <button id="btn-import">Import JSON</button>
+      <button id="btn-export">Export</button>
+      <button id="btn-import">Import</button>
       <button id="btn-reset" class="danger">Reset</button>
       <button id="btn-theme" type="button" aria-label="Toggle light/dark theme">🌙 Dark</button>
-      <input id="import-file" type="file" accept="application/json" hidden>
+      <input id="import-file" type="file" accept=".zip,.json,application/zip,application/json" hidden>
     </div>
   </header>
 
   <!-- In-app summary of the computed report (Go does the scoring). -->
   <section id="summary" class="summary" aria-label="Inspection summary" hidden></section>
+
+  <!-- Side-by-side comparison of properties (presentation only; no ranking). -->
+  <section id="compare" class="summary" aria-label="Property comparison" hidden></section>
 
   <nav id="phase-tabs" class="tabs" aria-label="Inspection phases"></nav>
   <main id="phases"><p class="loading">Loading checklist…</p></main>
@@ -61,5 +75,13 @@
   <!-- wasm_exec.js is copied from the Go toolchain by the Makefile. -->
   <script src="js/wasm_exec.js"></script>
   <script src="js/app.js"></script>
+  <!-- PWA: register the offline-shell service worker (relative path so it works
+       under the GitHub Pages subpath). adr/0004. -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () =>
+        navigator.serviceWorker.register("sw.js").catch(e => console.warn("SW registration failed", e)));
+    }
+  </script>
 </body>
 </html>

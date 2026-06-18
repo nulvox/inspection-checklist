@@ -1,0 +1,13 @@
+{
+  "name": "Home Inspection Checklist",
+  "short_name": "Inspection",
+  "description": "Offline checklist for evaluating cheap / distressed homes.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#2f6fed",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
