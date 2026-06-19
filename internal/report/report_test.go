@@ -70,6 +70,30 @@ func TestRender_HeaderAndDisclaimer(t *testing.T) {
 	}
 }
 
+// The on-report disclaimer must stay iron-clad: the project forbids softening it.
+// These phrases are load-bearing — if an edit drops one, this test fails so the
+// weakening is caught before it ships.
+func TestRender_DisclaimerIsBinding(t *testing.T) {
+	html, err := Render(sampleReport(), Meta{Property: "x"})
+	if err != nil {
+		t.Fatalf("Render error: %v", err)
+	}
+	required := []string{
+		"AS IS", // quotes are HTML-escaped in output, so match the bare phrase
+		"without warranties of any kind",
+		"NOT legal, real-estate, safety, or other professional advice",
+		"are NOT inspectors, engineers, electricians, attorneys, agents, or experts",
+		"NOT a substitute for a licensed",
+		"at your own risk, and the sole responsibility of the user",
+		"NO LIABILITY",
+	}
+	for _, phrase := range required {
+		if !strings.Contains(html, phrase) {
+			t.Errorf("disclaimer is missing a required clause: %q", phrase)
+		}
+	}
+}
+
 // The report must include a per-phase tally table: a table listing each phase
 // name alongside severity columns.
 func TestRender_PhaseTallyTable(t *testing.T) {

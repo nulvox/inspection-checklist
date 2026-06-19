@@ -24,11 +24,16 @@ type Meta struct {
 }
 
 // Disclaimer is reprinted on every report (see decision: modal + footer + report).
-const Disclaimer = `This checklist and report are for PERSONAL USE ONLY and are provided "AS IS", ` +
-	`without warranties of any kind, express or implied. They are an informational aid, ` +
-	`NOT professional advice, and NOT a substitute for a licensed home, structural, ` +
-	`electrical, pest, or environmental inspection. The author assumes no liability for ` +
-	`decisions made using this tool.`
+const Disclaimer = `This checklist and report are an INFORMATIONAL AID ONLY, provided "AS IS" ` +
+	`and "AS AVAILABLE", without warranties of any kind, express or implied (including ` +
+	`merchantability, fitness for a particular purpose, accuracy, or completeness). They ` +
+	`are NOT legal, real-estate, safety, or other professional advice; the authors are NOT ` +
+	`inspectors, engineers, electricians, attorneys, agents, or experts of any kind; and they ` +
+	`are NOT a substitute for a licensed home, structural, electrical, pest, or environmental ` +
+	`inspection. Always commission qualified, licensed professionals before making any ` +
+	`decision. All use is at will, at your own risk, and the sole responsibility of the user. ` +
+	`To the maximum extent permitted by law, the authors and contributors accept NO LIABILITY ` +
+	`for any loss, injury, damage, cost, or decision arising from use of this tool.`
 
 // tallyColumns is the severity order shown across the per-phase tally table.
 var tallyColumns = []checklist.Severity{
